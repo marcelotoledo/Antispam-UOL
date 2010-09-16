@@ -88,6 +88,9 @@ class CCproto
       return CCERR_STATUS
     end
 
+    pict_to   = PTODEFAULT
+    pict_type = PTUNSPECIFIED
+
     pack = CC_packet.new
     pack.setVer(CC_PROTO_VER)
     pack.setCmd(CMDCC_PICTURE2)
