@@ -47,10 +47,10 @@ class CCproto
     #shabuf += Digest::MD5.digest(pwd)
     shabuf += login
 
-    puts "pack.getData -> ("+pack.getData+")"
-    puts "MD5          -> ("+Digest::MD5.hexdigest(pwd)+")"
-    puts "login        -> ("+login+")"
-    puts "SHA256       -> ("+Digest::SHA256.hexdigest(pwd)+")"
+    puts "pack.getData -> ("+pack.getData+")" if DEBUG == true
+    puts "MD5          -> ("+Digest::MD5.hexdigest(pwd)+")" if DEBUG == true
+    puts "login        -> ("+login+")" if DEBUG == true
+    puts "SHA256       -> ("+Digest::SHA256.hexdigest(pwd)+")" if DEBUG == true
     
     pack.setCmd(CMDCC_HASH)
     pack.setSize(CC_HASH_SIZE)    
@@ -156,7 +156,7 @@ class CCproto
   end
 
   def picture_multipart
-    puts "NOT IMPLEMENTED"
+    puts "NOT IMPLEMENTED" if DEBUG == true if DEBUG == true
   end
 
   def picture_bad2(major_id, minor_id)

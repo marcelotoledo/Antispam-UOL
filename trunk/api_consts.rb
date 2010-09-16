@@ -39,3 +39,5 @@ PTASIRRA      = 86      # picture type - ASIRRA
 
 # multi-picture processing specifics
 PTASIRRA_PICS_NUM = 12
+
+DEBUG = false

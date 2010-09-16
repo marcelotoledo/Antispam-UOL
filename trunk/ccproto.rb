@@ -39,7 +39,7 @@ class CC_packet
   end
 
   def checkPackHdr(cmd = nil, size = nil)
-    puts "checkPackHdr: cmd = (" + cmd.to_s + ") size = (" + size.to_s + ")\n\n"
+    puts "checkPackHdr: cmd = (" + cmd.to_s + ") size = (" + size.to_s + ")\n\n" if DEBUG == true
     
     if  @ver != CC_PROTO_VER
       return false
@@ -59,20 +59,20 @@ class CC_packet
   
   # TODO: Checar se esta ok
   def pack
-    print "pack(): "
-    print [@ver, @cmd, @size].pack('CCV') + @data + "\n"
-    print "(@ver = "
-    print @ver
-    print ")"
-    print "(@cmd = "
-    print @cmd
-    print ")"
-    print "(@size = "
-    print @size
-    print ")"
-    print "(@data = "
-    print @data
-    print ")\n\n"
+    print "pack(): " if DEBUG == true
+    print [@ver, @cmd, @size].pack('CCV') + @data + "\n" if DEBUG == true
+    print "(@ver = " if DEBUG == true
+    print @ver if DEBUG == true
+    print ")" if DEBUG == true
+    print "(@cmd = " if DEBUG == true
+    print @cmd if DEBUG == true
+    print ")" if DEBUG == true
+    print "(@size = " if DEBUG == true
+    print @size if DEBUG == true
+    print ")" if DEBUG == true
+    print "(@data = " if DEBUG == true
+    print @data if DEBUG == true
+    print ")\n\n" if DEBUG == true
     
     [@ver, @cmd, @size].pack('CCV') + @data
   end
@@ -89,23 +89,23 @@ class CC_packet
     @cmd  = arr[1]
     @size = arr[2]
 
-    puts "unpackHeader:"
-    puts "bin = (" + bin + ")"
-    print "arr = "
-    p arr
-    print "\n\n\n\n\n\n"
-    print "(@ver: " + @ver.to_s + ")"
-    print "(@cmd: " + @cmd.to_s + ")"
-    print "(@size: " + @size.to_s + ")\n\n"
+    puts "unpackHeader:" if DEBUG == true
+    puts "bin = (" + bin + ")" if DEBUG == true
+    print "arr = " if DEBUG == true
+    p arr if DEBUG == true
+    print "\n\n\n\n\n\n" if DEBUG == true
+    print "(@ver: " + @ver.to_s + ")" if DEBUG == true
+    print "(@cmd: " + @cmd.to_s + ")" if DEBUG == true
+    print "(@size: " + @size.to_s + ")\n\n" if DEBUG == true
   end
   
   # TODO: Checar se esta ok  
   def unpackFrom(handle, cmd = nil, size = nil)
     bin = handle.recv(SIZEOF_CC_PACKET)
     
-    puts "unpackFrom (" + SIZEOF_CC_PACKET.to_s + ")"
-    puts "bin = (" + bin + ")"
-    puts "CMD = ("+cmd.to_s+") size = ("+size.to_s+")\n\n"
+    puts "unpackFrom (" + SIZEOF_CC_PACKET.to_s + ")" if DEBUG == true
+    puts "bin = (" + bin + ")" if DEBUG == true
+    puts "CMD = ("+cmd.to_s+") size = ("+size.to_s+")\n\n" if DEBUG == true
     
     unpackHeader(bin)
     if checkPackHdr(cmd, size) == false
