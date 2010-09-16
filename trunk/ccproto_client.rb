@@ -61,7 +61,8 @@ class CCproto
       s.close
       return CCERR_NET_ERROR
     end
-
+    
+    # TODO: Erro aqui
     if pack.unpackFrom(@s, CMDCC_OK) == false
       s.close
       return CCERR_NET_ERROR

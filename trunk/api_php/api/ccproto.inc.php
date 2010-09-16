@@ -44,12 +44,28 @@ class cc_packet {
 	 *
 	 */
 	function checkPackHdr( $cmd = NULL, $size = NULL ) {
+          print "checkPackHdr: cmd = (".$cmd.") size = (".$size.")\n\n";
+
 		if( $this->ver != CC_PROTO_VER )
 			return FALSE;
 		if( isset( $cmd ) && ($this->cmd != $cmd) )
 			return FALSE;
 		if( isset( $size ) && ($this->size != $size) )
 			return FALSE;
+                
+/*                 if (isset($size)) { */
+/*                   print "ISSET SIZE TRUE!!!!!!!!!!!!!!!" */
+/*                 } else { */
+/*                   print "ISSET SIZE FALSE!!!!!!!!!!!!!!!" */
+/*                 } */
+
+/*                 if ($this->size != $size) { */
+/*                   print "$this->size != $size" */
+/*                 } else { */
+/*                 } */
+                  
+/*                 print "this->size = (".$this->size.")"; */
+/*                 print "PASSOU!!!!!!!!!!!!!!!!!!!!!!!!\n"; */
 
 		return TRUE;
 	}
@@ -63,7 +79,7 @@ class cc_packet {
           print "(@ver = " . $this->ver . ")";
           print "(@cmd = " . $this->cmd . ")";
           print "(@size = " . $this->size . ")";
-          print "(@data = " . $this->data . ")\n";
+          print "(@data = " . $this->data . ")\n\n";
           
 
           return pack( 'CCV', $this->ver, $this->cmd, $this->size ) . $this->data;
@@ -73,8 +89,6 @@ class cc_packet {
 	 *
 	 */
 	function packTo( $handle ) {
-          print "packTo(): " . $this->pack() . "\n";
-
           return fwrite( $handle, $this->pack(), SIZEOF_CC_PACKET + strlen( $this->data ) );
 	}
 
@@ -94,7 +108,7 @@ class cc_packet {
                 print "\n";
                 print "(@ver: " . $this->ver . ")";
                 print "(@cmd: " . $this->cmd . ")";
-                print "(@size: " . $this->size . ")\n";
+                print "(@size: " . $this->size . ")\n\n";
 	}
 
 	/**
@@ -107,9 +121,9 @@ class cc_packet {
 
                 print "unpackFrom (" . SIZEOF_CC_PACKET . ")\n";
                 print "bin = (" . $bin . ")\n";
+                print "CMD = (".$cmd.") size = (".$size.")\n\n";
 
 		$this->unpackHeader( $bin );
-
 		if( $this->checkPackHdr( $cmd, $size ) === FALSE )
 			return FALSE;
 

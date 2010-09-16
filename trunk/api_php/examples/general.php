@@ -20,12 +20,12 @@
 		print( " OK\n" );
 	}
 
-/* 	$system_load = 0; */
-/* 	if( $ccp->system_load( $system_load ) != ccERR_OK ) { */
-/* 		print( "system_load() FAILED\n" ); */
-/* 		return; */
-/* 	} */
-/* 	print( "System load=".$system_load." perc\n" ); */
+	$system_load = 0;
+	if( $ccp->system_load( $system_load ) != ccERR_OK ) {
+		print( "system_load() FAILED\n" );
+		return;
+	}
+	print( "System load=".$system_load." perc\n" );
 
 /* 	$balance = 0; */
 /* 	if( $ccp->balance( $balance ) != ccERR_OK ) { */

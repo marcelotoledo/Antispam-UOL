@@ -15,20 +15,19 @@ ccp = CCproto.new
 ccp.init
 
 print "Logging in..."
-if ccp.login(HOST, PORT, USERNAME, PASSWORD) < 0
+res = ccp.login(HOST, PORT, USERNAME, PASSWORD)
+if res < 0
   puts "FAILED"
-  #return
 else
   puts " OK"
 end
 
-# system_load = 0
-# if ccp.system_load(system_load) != CCERR_OK
-#   puts "system_load() FAILED"
-#   return
-# end
-
-# puts "System load=" + system_load + " perc"
+res, system_load = ccp.system_load
+if res != CCERR_OK
+  puts "system_load() FAILED"
+  return
+end
+puts "System load=" + system_load + " perc"
 
 # balance = 0
 # if ccp.balance(balance) != CCERR_OK

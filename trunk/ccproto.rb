@@ -39,22 +39,25 @@ class CC_packet
   end
 
   def checkPackHdr(cmd = nil, size = nil)
+    puts "checkPackHdr: cmd = (" + cmd.to_s + ") size = (" + size.to_s + ")\n\n"
+    
     if  @ver != CC_PROTO_VER
       return false
     end
 
-    if defined?(@cmd) && @cmd != cmd
+    if cmd && @cmd != cmd
       return false
     end
-    
-    if defined?(@size) && @size != size
+
+    # TODO: no ultimo loop @size vem 0 e size nil
+    if size && @size != size
       return false
     end
     
     true
   end
   
-  # TODO: Checar se esta ok  
+  # TODO: Checar se esta ok
   def pack
     print "pack(): "
     print [@ver, @cmd, @size].pack('CCV') + @data + "\n"
@@ -69,14 +72,13 @@ class CC_packet
     print ")"
     print "(@data = "
     print @data
-    print ")\n"
+    print ")\n\n"
     
     [@ver, @cmd, @size].pack('CCV') + @data
   end
   
   # TODO: Checar se esta ok  
   def packTo(handle)
-    puts "packTo(): "+ pack.to_s
     handle.write(pack)
   end
   
@@ -94,7 +96,7 @@ class CC_packet
     print "\n\n\n\n\n\n"
     print "(@ver: " + @ver.to_s + ")"
     print "(@cmd: " + @cmd.to_s + ")"
-    print "(@size: " + @size.to_s + ")\n"
+    print "(@size: " + @size.to_s + ")\n\n"
   end
   
   # TODO: Checar se esta ok  
@@ -103,6 +105,7 @@ class CC_packet
     
     puts "unpackFrom (" + SIZEOF_CC_PACKET.to_s + ")"
     puts "bin = (" + bin + ")"
+    puts "CMD = ("+cmd.to_s+") size = ("+size.to_s+")\n\n"
     
     unpackHeader(bin)
     if checkPackHdr(cmd, size) == false
@@ -111,7 +114,7 @@ class CC_packet
 
     if @size > 0
       bin = handle.recv(@size)
-      if bin == false
+      if bin == nil || bin == false
         return false
       end
       @data = bin
@@ -181,7 +184,7 @@ class CC_pict_descr
   
   # TODO: checar se esta ok
   def unpack(bin)
-    arr = bin.unpack('V/V/V/V/V')
+    arr = bin.unpack('VVVVV')
     @timeout  = arr[0]
     @type     = arr[1]
     @size     = arr[2]
