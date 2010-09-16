@@ -4,12 +4,12 @@ require 'api_consts'
 require 'socket'
 require 'digest'
 
-SCCC_INIT  = 1 # initial status, ready to issue LOGIN on client
-SCCC_LOGIN = 2 # LOGIN is sent, waiting for RAND (login accepted) or
-               # CLOSE CONNECTION (login is unknown)
-SCCC_HASH = 3  # HASH is sent, server may CLOSE CONNECTION (hash is
-               # not recognized)
-SCCC_PICTURE = 4
+SCCC_INIT  = 1   # initial status, ready to issue LOGIN on client
+SCCC_LOGIN = 2   # LOGIN is sent, waiting for RAND (login accepted) or
+                 # CLOSE CONNECTION (login is unknown)
+SCCC_HASH = 3    # HASH is sent, server may CLOSE CONNECTION (hash is
+                 # not recognized)
+SCCC_PICTURE = 4 
 
 # CC protocol class
 class CCproto
@@ -68,7 +68,6 @@ class CCproto
       return CCERR_NET_ERROR
     end
 
-    s.close
     @status = SCCC_PICTURE
 
     return CCERR_OK
@@ -119,16 +118,16 @@ class CCproto
       pict_type  = desc.getType
       text       = desc.getData
 
-      if defined?(major_id)
+      if major_id
         major_id = desc.getMajorID
       end
 
-      if defined?(minor_id)
+      if minor_id
         minor_id = desc.getMinorID
         #return CCERR_OK, pict_to, pict_type, text, major_id, minor_id
       end
       
-      # TODO: Aqui ou dentro do defined?(minor_id)?
+      # TODO: Aqui ou dentro do if minor_id
       return CCERR_OK, pict_to, pict_type, text, major_id, minor_id
 
     when CMDCC_BALANCE
@@ -233,7 +232,8 @@ class CCproto
 
     case pack.getCmd
     when CMDCC_SYSTEM_LOAD
-      arr = unpack('C', pack.getData)
+      arr = pack.getData.unpack('C')
+      #arr = unpack('C', pack.getData)
       system_load = arr[0]
       return CCERR_OK, system_load
 
@@ -260,3 +260,4 @@ class CCproto
     return CCERR_NET_ERROR
   end
 end
+

@@ -14,7 +14,9 @@ PIC_FILE_NAME = "pic.jpg"
 ccp = CCproto.new
 ccp.init
 
-print "Logging in..."
+puts "#" * 100
+puts"Logging in..."
+puts "#" * 100
 res = ccp.login(HOST, PORT, USERNAME, PASSWORD)
 if res < 0
   puts "FAILED"
@@ -22,12 +24,16 @@ else
   puts " OK"
 end
 
+puts "#" * 100
+puts "System load..."
+puts "#" * 100
+
 res, system_load = ccp.system_load
 if res != CCERR_OK
   puts "system_load() FAILED"
   return
 end
-puts "System load=" + system_load + " perc"
+puts "System load=" + system_load.to_s + " perc"
 
 # balance = 0
 # if ccp.balance(balance) != CCERR_OK

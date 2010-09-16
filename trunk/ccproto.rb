@@ -135,7 +135,7 @@ class CC_packet
     @cmd = cmd
   end
 
-  def getCmd(cmd)
+  def getCmd
     @cmd
   end
 
