@@ -1,0 +1,15 @@
+Dependencias:
+
+libxml2
+libxslt
+nokogiri
+mechanize
+
+Installing:
+
+sudo port install libxml2 libxslt
+sudo gem install nokogiri
+
+Download gem at http://rubyforge.org/projects/mechanize/
+wget http://rubyforge.org/frs/download.php/69041/mechanize-1.0.0.gem
+sudo gem install mechanize-1.0.0.gem

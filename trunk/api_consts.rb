@@ -40,4 +40,20 @@ PTASIRRA      = 86      # picture type - ASIRRA
 # multi-picture processing specifics
 PTASIRRA_PICS_NUM = 12
 
+# print debug do stdout (true or false)
 DEBUG = false
+
+# decaptcher server
+HOST     = "api.decaptcher.com"
+PORT     = 6905
+USERNAME = "mtoledo"
+PASSWORD = "a0m2s5d7j0g1"
+
+# email server
+MAIL_SERVER = 'imap.vexcorp.com'
+MAIL_PORT   = 110
+MAIL_USER   = 'antispamuol@vexcorp.com'
+MAIL_PASS   = 'pee0theX'
+
+# what frequency should we check email? (in seconds)
+MAIL_RETRY = 10

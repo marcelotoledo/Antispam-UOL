@@ -1,3 +1,19 @@
+# ccproto.rb --- 
+
+# Copyright  (C)  2010  Marcelo Toledo <marcelo@marcelotoledo.com>
+
+# Version: 1.0
+# Keywords: 
+# Author: Marcelo Toledo <marcelo@marcelotoledo.com>
+# Maintainer: Marcelo Toledo <marcelo@marcelotoledo.com>
+# URL: http://
+
+# Commentary: 
+
+
+
+# Code:
+
 CC_PROTO_VER        = 1      #  protocol version
 CC_RAND_SIZE        = 256    #  size of the random sequence for authentication procedure
 CC_MAX_TEXT_SIZE    = 100    #  maximum characters in returned text for picture
@@ -26,8 +42,8 @@ SIZEOF_CC_PACKET     = 6
 SIZEOF_CC_PICT_DESCR = 20
 
 require 'api_consts.rb'
+require 'misc.rb'
 
-# packet class
 class CC_packet
   attr_accessor :ver, :cmd, :size, :data
 
@@ -39,84 +55,61 @@ class CC_packet
   end
 
   def checkPackHdr(cmd = nil, size = nil)
-    puts "checkPackHdr: cmd = (" + cmd.to_s + ") size = (" + size.to_s + ")\n\n" if DEBUG == true
+    pdebug "checkPackHdr: cmd = (" + cmd.to_s + ") size = (" + size.to_s + ")\n"
     
-    if  @ver != CC_PROTO_VER
-      return false
-    end
-
-    if cmd && @cmd != cmd
-      return false
-    end
-
-    # TODO: no ultimo loop @size vem 0 e size nil
-    if size && @size != size
-      return false
+    if  (@ver != CC_PROTO_VER) ||
+        (cmd && @cmd != cmd)  ||
+        (size && @size != size)
+        return false
     end
     
     true
   end
   
-  # TODO: Checar se esta ok
   def pack
-    print "pack(): " if DEBUG == true
-    print [@ver, @cmd, @size].pack('CCV') + @data + "\n" if DEBUG == true
-    print "(@ver = " if DEBUG == true
-    print @ver if DEBUG == true
-    print ")" if DEBUG == true
-    print "(@cmd = " if DEBUG == true
-    print @cmd if DEBUG == true
-    print ")" if DEBUG == true
-    print "(@size = " if DEBUG == true
-    print @size if DEBUG == true
-    print ")" if DEBUG == true
-    print "(@data = " if DEBUG == true
-    print @data if DEBUG == true
-    print ")\n\n" if DEBUG == true
+    pdebug "pack(): "
+    pdebug [@ver, @cmd, @size].pack('CCV') + @data + "\n"
+    pdebug "(@ver = " + @ver.to_s + ")\n"
+    pdebug "(@cmd = " + @cmd.to_s + ")\n"
+    pdebug "(@size = " + @size.to_s + ")\n"
+    pdebug "(@data = " + @data.to_s + ")\n\n"
     
     [@ver, @cmd, @size].pack('CCV') + @data
   end
   
-  # TODO: Checar se esta ok  
   def packTo(handle)
     handle.write(pack)
   end
   
-  # TODO: Checar se esta ok
   def unpackHeader(bin)
     arr = bin.unpack('CCV')
     @ver  = arr[0]
     @cmd  = arr[1]
     @size = arr[2]
 
-    puts "unpackHeader:" if DEBUG == true
-    puts "bin = (" + bin + ")" if DEBUG == true
-    print "arr = " if DEBUG == true
-    p arr if DEBUG == true
-    print "\n\n\n\n\n\n" if DEBUG == true
-    print "(@ver: " + @ver.to_s + ")" if DEBUG == true
-    print "(@cmd: " + @cmd.to_s + ")" if DEBUG == true
-    print "(@size: " + @size.to_s + ")\n\n" if DEBUG == true
+    pdebug "unpackHeader:\n"
+    pdebug "bin = (" + bin.to_s + ")\n"
+    pdebug "(@ver: " + @ver.to_s + ")\n"
+    pdebug "(@cmd: " + @cmd.to_s + ")\n"
+    pdebug "(@size: " + @size.to_s + ")\n\n"
   end
   
-  # TODO: Checar se esta ok  
   def unpackFrom(handle, cmd = nil, size = nil)
     bin = handle.recv(SIZEOF_CC_PACKET)
     
-    puts "unpackFrom (" + SIZEOF_CC_PACKET.to_s + ")" if DEBUG == true
-    puts "bin = (" + bin + ")" if DEBUG == true
-    puts "CMD = ("+cmd.to_s+") size = ("+size.to_s+")\n\n" if DEBUG == true
+    pdebug "unpackFrom (" + SIZEOF_CC_PACKET.to_s + ")\n"
+    pdebug "bin = (" + bin + ")\n"
+    pdebug "CMD = ("+cmd.to_s+") size = ("+size.to_s+")\n\n"
     
     unpackHeader(bin)
-    if checkPackHdr(cmd, size) == false
-      return false
-    end
+    return false if checkPackHdr(cmd, size) == false
 
     if @size > 0
       bin = handle.recv(@size)
       if bin == nil || bin == false
         return false
       end
+      
       @data = bin
     end
 
@@ -149,7 +142,6 @@ class CC_packet
   
   def calcSize
     @size = @data.length
-    @size
   end
 
   def getFullSize
@@ -165,7 +157,6 @@ class CC_packet
   end
 end
 
-# picture description class
 class CC_pict_descr
   attr_accessor :timeout, :type, :size, :major_id, :minor_id, :data
 
@@ -182,7 +173,6 @@ class CC_pict_descr
     [@timeout, @type, @size, @major_id, @minor_id].pack('VVVVV') + @data
   end
   
-  # TODO: checar se esta ok
   def unpack(bin)
     arr = bin.unpack('VVVVV')
     @timeout  = arr[0]
@@ -219,7 +209,6 @@ class CC_pict_descr
 
   def calcSize
     @size = @data.length
-    @size
   end
   
   def getFullSize
