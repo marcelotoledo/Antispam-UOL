@@ -50,6 +50,8 @@ USERNAME = "mtoledo"
 PASSWORD = "a0m2s5d7j0g1"
 
 # email server
+# MAIL_PROT = 'imap'
+MAIL_PROT = 'pop'
 MAIL_SERVER = 'imap.vexcorp.com'
 MAIL_PORT   = 110
 MAIL_USER   = 'antispamuol@vexcorp.com'
